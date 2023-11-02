@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-screen text-black font-extrabold text-4xl bg-green-400 flex justify-center items-center" id="sectionToClick" v-if="showBlock" @click="stopTimer">
+  <div class="w-full h-screen font-extrabold text-6xl flex justify-center items-center"  id="sectionToClick" v-if="showBlock" @click="stopTimer" :style="{ backgroundColor: randomHexColor, color: randomFontColor }">
     Click me!
   </div>
 </template>
@@ -11,13 +11,19 @@ export default {
     return {
       showBlock: false,
       timer: null,
-      reactionTime: 0
+      reactionTime: null
     }
   },
   mounted(){
     //console.log(this.delay)
+    
     setTimeout(() => {
       this.showBlock = true;
+      this.randomHexColor = this.generateRandomColor();
+      //randomHexColor = this.randomHexColor
+      this.randomFontColor = this.generateRandomFontColor(this.randomHexColor)
+      //console.log(this.randomHexColor)
+      //console.log(this.randomFontColor)
       this.startTimer()
     }, this.delay)
   },
@@ -29,8 +35,22 @@ export default {
     },
     stopTimer() {
       clearInterval(this.timer)
-      console.log(this.reactionTime)
+      //console.log(this.reactionTime)
+      this.$emit('end', this.reactionTime)
+    },
+    generateRandomColor(){
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+      
+    },
+    generateRandomFontColor(color){
+      return '#' + ("000000" + (0xFFFFFF ^ parseInt(color.substring(1),16)).toString(16)).slice(-6);
     }
+    
   }
  
 }
