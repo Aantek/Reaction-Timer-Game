@@ -54,7 +54,7 @@ export default {
     endGame(reactionTime){
 
       this.score = reactionTime
-      this.score = this.score / 100
+      this.score = this.score / 1000
       //console.log(this.score)
       this.isPlaying = false
       this.showResults = true
